@@ -55,11 +55,22 @@ class App extends Component {
 
     componentDidMount() {
 
-        if (window.DeviceOrientationEvent) {
+        if (typeof DeviceMotionEvent.requestPermission === 'function') {
+            window.DeviceOrientationEvent.requestPermission()
+                .then(response => {
+                    if (response === 'granted') {
+                        window.addEventListener("deviceorientation", this.handleOrientation, true);
+                    }
+                })
+                .catch((err) => {
+                    console.log(err);
+                });
+        }
+        else if (window.DeviceOrientationEvent) {
             window.addEventListener("deviceorientation", this.handleOrientation, true);
         }
         else {
-            alert("lol no");
+            console.log("lol device orientation doesn't exist");
         }
 
     }
@@ -99,7 +110,7 @@ class App extends Component {
         innerLight.x = innerLight.baseX - x;
         innerLight.y = innerLight.baseY - y;
         innerDark.x = innerDark.baseX + x;
-        innerDark.y = innerDark.baseY + y;
+        innerDark.y = innerDark.baseY + y; 
 
         outerLight.style.boxShadow = this.calculateStyle(outerLight);
         outerDark.style.boxShadow = this.calculateStyle(outerDark);
