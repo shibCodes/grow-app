@@ -1,20 +1,61 @@
 import React, { Component } from 'react';
-import logo from './logo.svg';
 import './App.css';
+import Butt from './Butt/Butt';
 
 class App extends Component {
 
     state = {
-        deviceOrientation: {
-            absolute: 0,
-            alpha: 0,
-            beta: 0,
-            gamma: 0
+        shadowPositions: {
+            outerLight: {
+                x: -10,
+                y: -5,
+                blur: 10,
+                spread: 0,
+                inset: false,
+                rgba: "rgba(255,215,47,0.68)",
+                style: { boxShadow: "-10px -5px 10px 0px rgba(255,215,47,0.68)" }
+            },
+            outerDark: {
+                x: 10,
+                y: 5,
+                blur: 10,
+                spread: 0,
+                inset: false,
+                rgba: "rgba(174,141,0,0.39)",
+                style: { boxShadow: "10px 5px 10px 0px rgba(174,141,0,0.39)" }
+            },
+            innerLight: {
+                x: -3,
+                y: -3,
+                blur: 3,
+                spread: 0,
+                inset: true,
+                rgba: "rgba(255,215,47,0.35)",
+                style: { boxShadow: "inset -3px -3px 3px 0px rgba(255,215,47,0.35)" }
+            },
+            innerDark: {
+                x: 3,
+                y: 3,
+                blur: 3,
+                spread: 0,
+                inset: true,
+                rgba: "rgba(174,141,0,0.1)",
+                style: { boxShadow: "inset 3px 3px 3px 0px rgba(174,141,0,0.1)" }
+            }
         }
     }
 
     componentDidMount() {
-        window.addEventListener("deviceorientation", this.handleOrientation);
+
+        alert("mounted!");
+
+        if (window.DeviceOrientationEvent) {
+            window.addEventListener("deviceorientation", this.handleOrientation, true);
+        }
+        else {
+            alert("lol no");
+        }
+
     }
 
     componentWillUnmount() {
@@ -23,20 +64,64 @@ class App extends Component {
 
     handleOrientation = (event) => {
 
-        const deviceOrientation = {
-            ...this.state.deviceOrientation
+        alert("yes");
+
+        let leftToRight = event.gamma;
+        let frontToBack = event.beta;
+
+        let x = leftToRight / 2;
+        let y = frontToBack / 2;
+
+        const outerLight = {
+            ...this.state.shadowPositions.outerLight
         }
 
-        deviceOrientation.absolute = event.absolute;
-        deviceOrientation.alpha = event.alpha;
-        deviceOrientation.beta = event.beta;
-        deviceOrientation.gamma = event.gamma;
+        const outerDark = {
+            ...this.state.shadowPositions.outerDark
+        }
 
-        console.log(deviceOrientation);
+        const innerLight = {
+            ...this.state.shadowPositions.innerLight
+        }
+
+        const innerDark = {
+            ...this.state.shadowPositions.innerDark
+        }
+
+        outerLight.x = outerLight.x - x;
+        outerLight.y = outerLight.y - y; 
+        outerDark.x = outerDark.x + x;
+        outerDark.y = outerDark.y + y;
+        innerLight.x = innerLight.x - x;
+        innerLight.y = innerLight.y - y;
+        innerDark.x = innerDark.x + x;
+        innerDark.y = innerDark.y + y;
+
+        outerLight.style.boxShadow = this.calculateStyle(outerLight);
+        outerDark.style.boxShadow = this.calculateStyle(outerDark);
+        innerLight.style.boxShadow = this.calculateStyle(innerLight);
+        innerDark.style.boxShadow = this.calculateStyle(innerDark);
+
         
+       
         this.setState({
-            deviceOrientation: deviceOrientation
+            shadowPositions: {
+                outerLight: outerLight,
+                outerDark: outerDark,
+                innerLight: innerLight,
+                innerDark: innerDark
+            }
         });
+
+    }
+
+    calculateStyle = (element) => {
+
+        let style = element.x + "px " + element.y + "px " + element.blur + "px " + element.spread + "px " + element.rgba;
+
+        if (element.inset) { style = "inset " + style; }
+
+        return style;
 
     }
 
@@ -44,13 +129,13 @@ class App extends Component {
 
         return (
             <div className="App">
-                <header className="App-header">
-                    <img src={logo} className="App-logo" alt="logo" />
-                    <p>Absolute: {this.state.deviceOrientation.absolute}</p>
-                    <p>Absolute: {this.state.deviceOrientation.alpha}</p>
-                    <p>Absolute: {this.state.deviceOrientation.beta}</p>
-                    <p>Absolute: {this.state.deviceOrientation.gamma}</p>
-                </header>
+                <Butt 
+                    title="let's grow"
+                    outerLight={this.state.shadowPositions.outerLight.style}
+                    outerDark={this.state.shadowPositions.outerDark.style}
+                    innerLight={this.state.shadowPositions.innerLight.style}
+                    innerDark={this.state.shadowPositions.innerDark.style}></Butt>
+    <p>{ this.state.shadowPositions.outerDark.style.boxShadow }</p>
             </div>
         );
     }
