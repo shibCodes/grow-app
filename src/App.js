@@ -55,6 +55,22 @@ class App extends Component {
 
     componentDidMount() {
 
+        
+        if (window.DeviceOrientationEvent) {
+            window.addEventListener("deviceorientation", this.handleOrientation, true);
+        }
+        else {
+            //alert("lol device orientation doesn't exist");
+        }
+
+    }
+
+    componentWillUnmount() {
+        window.removeEventListener("deviceorientation");
+    }
+
+    askPermissions = () => {
+        //alert("yooo");
         if (typeof DeviceMotionEvent.requestPermission === 'function') {
             window.DeviceOrientationEvent.requestPermission()
                 .then(response => {
@@ -66,17 +82,6 @@ class App extends Component {
                     alert(err);
                 });
         }
-        else if (window.DeviceOrientationEvent) {
-            window.addEventListener("deviceorientation", this.handleOrientation, true);
-        }
-        else {
-            alert("lol device orientation doesn't exist");
-        }
-
-    }
-
-    componentWillUnmount() {
-        window.removeEventListener("deviceorientation");
     }
 
     handleOrientation = (event) => {
@@ -141,7 +146,7 @@ class App extends Component {
     render() {
 
         return (
-            <div className="App">
+            <div className="App" onClick={this.askPermissions}>
                 <Butt 
                     title="let's grow"
                     outerLight={this.state.shadowPositions.outerLight.style}
