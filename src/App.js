@@ -63,14 +63,14 @@ class App extends Component {
                     }
                 })
                 .catch((err) => {
-                    console.log(err);
+                    alert(err);
                 });
         }
         else if (window.DeviceOrientationEvent) {
             window.addEventListener("deviceorientation", this.handleOrientation, true);
         }
         else {
-            console.log("lol device orientation doesn't exist");
+            alert("lol device orientation doesn't exist");
         }
 
     }
