@@ -7,6 +7,8 @@ class App extends Component {
     state = {
         shadowPositions: {
             outerLight: {
+                baseX: -10,
+                baseY: -5,
                 x: -10,
                 y: -5,
                 blur: 10,
@@ -16,6 +18,8 @@ class App extends Component {
                 style: { boxShadow: "-10px -5px 10px 0px rgba(255,215,47,0.68)" }
             },
             outerDark: {
+                baseX: 10,
+                baseY: 5,
                 x: 10,
                 y: 5,
                 blur: 10,
@@ -25,6 +29,8 @@ class App extends Component {
                 style: { boxShadow: "10px 5px 10px 0px rgba(174,141,0,0.39)" }
             },
             innerLight: {
+                baseX: -3,
+                baseY: -3,
                 x: -3,
                 y: -3,
                 blur: 3,
@@ -34,6 +40,8 @@ class App extends Component {
                 style: { boxShadow: "inset -3px -3px 3px 0px rgba(255,215,47,0.35)" }
             },
             innerDark: {
+                baseX: 3,
+                baseY: 3,
                 x: 3,
                 y: 3,
                 blur: 3,
@@ -84,14 +92,14 @@ class App extends Component {
             ...this.state.shadowPositions.innerDark
         }
 
-        outerLight.x = outerLight.x - x;
-        outerLight.y = outerLight.y - y; 
-        outerDark.x = outerDark.x + x;
-        outerDark.y = outerDark.y + y;
-        innerLight.x = innerLight.x - x;
-        innerLight.y = innerLight.y - y;
-        innerDark.x = innerDark.x + x;
-        innerDark.y = innerDark.y + y;
+        outerLight.x = outerLight.baseX - x;
+        outerLight.y = outerLight.baseY - y; 
+        outerDark.x = outerDark.baseX + x;
+        outerDark.y = outerDark.baseY + y;
+        innerLight.x = innerLight.baseX - x;
+        innerLight.y = innerLight.baseY - y;
+        innerDark.x = innerDark.baseX + x;
+        innerDark.y = innerDark.baseY + y;
 
         outerLight.style.boxShadow = this.calculateStyle(outerLight);
         outerDark.style.boxShadow = this.calculateStyle(outerDark);
