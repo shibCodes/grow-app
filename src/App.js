@@ -47,8 +47,6 @@ class App extends Component {
 
     componentDidMount() {
 
-        alert("mounted!");
-
         if (window.DeviceOrientationEvent) {
             window.addEventListener("deviceorientation", this.handleOrientation, true);
         }
@@ -63,8 +61,6 @@ class App extends Component {
     }
 
     handleOrientation = (event) => {
-
-        alert("yes");
 
         let leftToRight = event.gamma;
         let frontToBack = event.beta;
@@ -102,8 +98,6 @@ class App extends Component {
         innerLight.style.boxShadow = this.calculateStyle(innerLight);
         innerDark.style.boxShadow = this.calculateStyle(innerDark);
 
-        
-       
         this.setState({
             shadowPositions: {
                 outerLight: outerLight,
