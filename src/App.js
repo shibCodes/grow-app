@@ -117,6 +117,11 @@ class App extends Component {
         innerDark.x = innerDark.baseX + x;
         innerDark.y = innerDark.baseY + y; 
 
+        outerLight.y = this.checkBoundaries(outerLight);
+        outerDark.y = this.checkBoundaries(outerDark);
+        innerLight.y = this.checkBoundaries(innerLight);
+        innerDark.y = this.checkBoundaries(innerDark);
+
         outerLight.style.boxShadow = this.calculateStyle(outerLight);
         outerDark.style.boxShadow = this.calculateStyle(outerDark);
         innerLight.style.boxShadow = this.calculateStyle(innerLight);
@@ -130,6 +135,21 @@ class App extends Component {
                 innerDark: innerDark
             }
         });
+
+    }
+
+    checkBoundaries = (element) => {
+
+        let value = element.y;
+
+        if (element.baseY < 0 && element.y < element.baseY) {
+            value = element.baseY;
+        }
+        else if (element.baseY > 0 && element.y > element.baseY) {
+            value = element.baseY;
+        }
+        
+        return value;
 
     }
 
