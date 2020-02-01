@@ -129,7 +129,6 @@ class App extends Component {
                     outerDark={this.state.shadowPositions.outerDark.style}
                     innerLight={this.state.shadowPositions.innerLight.style}
                     innerDark={this.state.shadowPositions.innerDark.style}></Butt>
-    <p>{ this.state.shadowPositions.outerDark.style.boxShadow }</p>
             </div>
         );
     }
